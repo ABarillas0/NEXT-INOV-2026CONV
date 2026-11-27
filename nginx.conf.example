@@ -1,0 +1,67 @@
+# Convivio ALMO 2026 detrás de nginx
+# Copia a /etc/nginx/sites-available/convivio, cambia el dominio, enlázalo en sites-enabled
+# y saca el certificado con:  sudo certbot --nginx -d convivio.tudominio.com
+#
+# Importante: la app usa rutas absolutas (/api, /socket.io, /photos), así que va en un
+# subdominio propio, no en una subcarpeta tipo /convivio/.
+
+# Necesario para que Socket.IO (WebSocket) funcione
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+upstream convivio_app {
+    server 127.0.0.1:3000;   # HOST_PORT del docker-compose
+    keepalive 32;
+}
+
+server {
+    listen 80;
+    server_name convivio.tudominio.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name convivio.tudominio.com;
+
+    # (certbot llena estas dos líneas)
+    ssl_certificate     /etc/letsencrypt/live/convivio.tudominio.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/convivio.tudominio.com/privkey.pem;
+
+    # Las selfies llegan como JSON en base64 (hasta ~5 MB)
+    client_max_body_size 10m;
+
+    # Tiempo real: Socket.IO necesita upgrade a WebSocket y conexiones largas
+    location /socket.io/ {
+        proxy_pass http://convivio_app;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
+        proxy_buffering off;
+    }
+
+    # Fotos de jugadores (cache de 1 día)
+    location /photos/ {
+        proxy_pass http://convivio_app;
+        proxy_set_header Host $host;
+        expires 1d;
+    }
+
+    location / {
+        proxy_pass http://convivio_app;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

@@ -1,0 +1,14 @@
+services:
+  convivio:
+    build: .
+    image: convivio-almo2026:latest
+    container_name: convivio-almo2026
+    restart: unless-stopped
+    environment:
+      PORT: 3000
+      ADMIN_PIN: ${ADMIN_PIN:-2026}
+      DISABLE_HTTPS: ${DISABLE_HTTPS:-1}
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    volumes:
+      - ./data:/app/data

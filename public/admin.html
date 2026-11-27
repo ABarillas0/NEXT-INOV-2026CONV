@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1115">
+  <title>Control de Rifa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Russo+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    body { -webkit-user-select: text; user-select: text; }
+    .tabs { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; }
+    .tabs button { flex: 1; padding: 12px 10px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); font-weight: 800; white-space: nowrap; }
+    .tabs button.sel { background: var(--neon); color: #071a02; border-color: var(--neon); }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+    .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 10px; text-align: center; }
+    .stat b { display: block; font-family: 'Russo One'; font-size: 24px; color: var(--neon); }
+    .stat span { font-size: 11px; color: var(--muted); text-transform: uppercase; }
+    .plist { display: flex; flex-direction: column; gap: 6px; }
+    .prow { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 12px; background: rgba(0,0,0,.25); border-left: 4px solid var(--sqc); }
+    .prow .info { flex: 1; min-width: 0; }
+    .prow .info b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .prow .info small { color: var(--muted); }
+    .prow .tk { font-family: 'Russo One'; color: var(--gold); min-width: 34px; text-align: center; }
+    .mini { padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); font-weight: 800; }
+    .mini.plus { background: var(--gold); color: #000; border-color: var(--gold); }
+    .mini.danger { color: var(--red); }
+    select, .inp { padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0,0,0,.4); color: var(--text); font: inherit; width: 100%; }
+    .qr { background: #fff; border-radius: 18px; padding: 14px; width: 100%; max-width: 360px; margin: 0 auto; display: block; }
+    .judge-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .judge-grid button { background: none; border: 0; padding: 0; text-align: center; font-size: 10px; color: var(--muted); }
+    .judge-grid .ava { width: 100%; height: auto; aspect-ratio: 1; border-radius: 12px; }
+    .judge-grid .tkb { color: var(--gold); font-weight: 800; }
+    .search { margin-bottom: 10px; }
+    .meter { height: 10px; border-radius: 5px; background: var(--line); overflow: hidden; }
+    .meter i { display: block; height: 100%; background: linear-gradient(90deg, var(--neon), var(--race)); transition: width .4s; }
+    .stats { grid-template-columns: repeat(5, 1fr); }
+    @media (max-width: 480px) { .stats { grid-template-columns: repeat(3, 1fr); } }
+  </style>
+</head>
+<body>
+  <div class="app wide" id="app">
+    <div class="topbar">
+      <div class="brand">CONTROL <b>RIFA</b> · STAFF</div>
+      <span class="pill"><span class="dot"></span><span id="online">0</span></span>
+    </div>
+    <main id="view"></main>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/fx.js"></script>
+  <script src="/admin.js"></script>
+</body>
+</html>

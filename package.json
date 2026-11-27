@@ -1,0 +1,19 @@
+{
+  "name": "convivio-almo2026",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Registro y rifa en vivo - Gotcha & Go-Karts",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "tunnel": "npx -y cloudflared tunnel --url http://localhost:${PORT:-3000}"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "qrcode": "^1.5.4",
+    "selfsigned": "^2.4.1",
+    "socket.io": "^4.8.1"
+  }
+}

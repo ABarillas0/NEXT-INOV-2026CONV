@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <meta name="theme-color" content="#0f1115">
+  <title>Convivio ALMO 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Russo+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app" id="app">
+    <div class="topbar">
+      <div class="brand">CONVIVIO <b>ALMO</b> 2026</div>
+      <div class="row" style="flex:0;gap:8px">
+        <span class="pill hidden" id="onlinePill"><span class="dot"></span><span id="onlineN">0</span></span>
+        <button class="icon-btn" id="muteBtn" aria-label="Sonido">🔊</button>
+      </div>
+    </div>
+    <div id="kioskBar" class="kiosk-bar hidden">MODO KIOSKO · iPAD</div>
+    <main id="view"></main>
+  </div>
+
+  <canvas id="work" width="600" height="600" class="hidden"></canvas>
+  <input type="file" id="fileCam" accept="image/*" capture="user" class="hidden">
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/fx.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
